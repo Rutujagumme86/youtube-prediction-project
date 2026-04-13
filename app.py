@@ -6,9 +6,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import mysql.connector
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+
 
 # DB connection
 def get_data():
