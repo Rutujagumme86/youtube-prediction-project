@@ -7,10 +7,10 @@ import pickle
 df = pd.read_csv("data/youtube.csv")
 
 # Select useful columns
-df = df[['category_id', 'view_count', 'like_count', 'comment_count', 'duration_seconds']]
+df = df[[ 'view_count', 'like_count', 'comment_count', 'duration_seconds']]
 
 # Feature & target
-X = df[['category_id', 'like_count', 'comment_count', 'duration_seconds']]
+X = df[['like_count', 'comment_count', 'duration_seconds']]
 y = df['view_count']
 
 # Train-test split

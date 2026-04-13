@@ -58,7 +58,7 @@ else:
     st.title("📈 YouTube Video View Prediction")
 
     # Inputs
-    category_id = st.number_input("Category ID", min_value=1)
+    
     like_count = st.number_input("Like Count", min_value=0)
     comment_count = st.number_input("Comment Count", min_value=0)
     duration = st.number_input("Duration (seconds)", min_value=1)
@@ -66,13 +66,13 @@ else:
     # Prediction
     if st.button("Predict"):
 
-        features = np.array([[category_id, like_count, comment_count, duration]])
+        features = np.array([[like_count, comment_count, duration]])
         prediction = model.predict(features)[0]
 
         st.success(f"Predicted Views: {int(prediction)}")
 
         # Save to DB
-        insert_data((category_id, like_count, comment_count, duration, prediction))
+        insert_data(like_count, comment_count, duration, int(prediction))
 
         # Viral check
         if prediction > 100000:
@@ -91,8 +91,4 @@ else:
         plt.yscale('log')
         st.pyplot(plt)
 
-    # ---------------- ADMIN PANEL ----------------
-    st.subheader("📊 Admin Dashboard")
-
-    df = get_data()
-    st.dataframe(df)
+    
