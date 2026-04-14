@@ -1,4 +1,8 @@
 import streamlit as st
+
+# ✅ Page config (TOP pe hi hona chahiye)
+st.set_page_config(page_title="YouTube Predictor", page_icon="📺")
+
 import pickle
 import numpy as np
 from db import insert_data
@@ -24,8 +28,15 @@ def get_data():
 model = pickle.load(open("model.pkl", "rb"))
 
 
-# ---------------- UI ----------------
-st.title("📈 YouTube Video View Prediction")
+# ---------------- YOUTUBE LOGO + TITLE ----------------
+col1, col2 = st.columns([1, 4])
+
+with col1:
+    st.image("https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg", width=80)
+
+with col2:
+    st.title("YouTube Video View Prediction")
+
 
 st.markdown("Enter video details to predict views and performance 🚀")
 
@@ -40,6 +51,8 @@ duration = st.number_input("⏱ Duration (seconds)", min_value=1)
 if st.button("Predict"):
 
     features = np.array([[like_count, comment_count, duration]])
+
+    # 🔥 IMPORTANT (log model fix)
     prediction = np.expm1(model.predict(features)[0])
 
     st.success(f"📊 Predicted Views: {int(prediction)}")
