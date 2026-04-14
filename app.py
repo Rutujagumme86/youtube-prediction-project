@@ -75,9 +75,3 @@ if st.button("Predict"):
     st.pyplot(plt)
 
 
-# ---------------- SHOW DATABASE ----------------
-st.subheader("📁 Previous Predictions")
-
-if st.button("Show Data"):
-    data = get_data()
-    st.dataframe(data)
