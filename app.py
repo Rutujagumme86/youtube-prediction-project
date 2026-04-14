@@ -32,19 +32,18 @@ model = pickle.load(open("model.pkl", "rb"))
 col1, col2 = st.columns([1, 6])
 
 with col1:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg", width=100)
+    st.image("https://img.icons8.com/color/96/youtube-play.png", width=60)
 
 with col2:
     st.markdown(
-        "<h1 style='margin-top:10px;'>YouTube Video View Prediction</h1>",
+        "<h1 style='margin-top:5px;'>YouTube Video View Prediction</h1>",
         unsafe_allow_html=True
     )
 
 st.markdown(
-    "<p style='font-size:18px; color:gray;'>Enter video details to predict views and performance 🚀</p>",
+    "<p style='font-size:18px; color:gray;'>Enter video details to predict views and performance </p>",
     unsafe_allow_html=True
 )
-
 
 # ---------------- INPUTS ----------------
 like_count = st.number_input("👍 Like Count", min_value=0)
