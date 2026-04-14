@@ -37,16 +37,25 @@ if st.button("Predict"):
     features = np.array([[like_count, comment_count, duration]])
     prediction = model.predict(features)[0]
 
-    st.success(f"Predicted Views: {int(prediction)}")
+    st.success(f"📈 Predicted Views: {int(prediction)}")
 
     # Save to DB
     insert_data(like_count, comment_count, duration, int(prediction))
 
-    # Viral check
-    if prediction > 100000:
-        st.success("🔥 This video can go VIRAL!")
+    # 🔥 LEVEL LOGIC
+    st.subheader("📊 Performance Level")
+
+    if prediction > 1000000:
+        st.success("🔥 High Viral Potential")
+        st.markdown("🚀 This video has a strong chance of going viral!")
+
+    elif prediction > 200000:
+        st.info("⚡ Medium Performance")
+        st.markdown("👍 This video can perform well with good engagement.")
+
     else:
-        st.warning("📉 Low chances of going viral")
+        st.warning("📉 Low Performance")
+        st.markdown("❌ This video may not reach a wide audience.")
 
     # Graph
     st.subheader("📊 Comparison")
