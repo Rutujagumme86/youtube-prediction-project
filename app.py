@@ -7,8 +7,6 @@ import pandas as pd
 import mysql.connector
 import os
 
-
-
 # DB connection
 def get_data():
     conn = mysql.connector.connect(
@@ -21,47 +19,42 @@ def get_data():
     return df
 
 
+# ---------------- MAIN APP ----------------
 
+# Load model
+model = pickle.load(open("model.pkl", "rb"))
 
-# ---------------- MAIN APP (AFTER LOGIN) ----------------
+st.title("📈 YouTube Video View Prediction")
 
-    # Load model
-    model = pickle.load(open("model.pkl", "rb"))
+# Inputs
+like_count = st.number_input("Like Count", min_value=0)
+comment_count = st.number_input("Comment Count", min_value=0)
+duration = st.number_input("Duration (seconds)", min_value=1)
 
-    st.title("📈 YouTube Video View Prediction")
+# Prediction
+if st.button("Predict"):
 
-    # Inputs
-    
-    like_count = st.number_input("Like Count", min_value=0)
-    comment_count = st.number_input("Comment Count", min_value=0)
-    duration = st.number_input("Duration (seconds)", min_value=1)
+    features = np.array([[like_count, comment_count, duration]])
+    prediction = model.predict(features)[0]
 
-    # Prediction
-    if st.button("Predict"):
+    st.success(f"Predicted Views: {int(prediction)}")
 
-        features = np.array([[like_count, comment_count, duration]])
-        prediction = model.predict(features)[0]
+    # Save to DB
+    insert_data(like_count, comment_count, duration, int(prediction))
 
-        st.success(f"Predicted Views: {int(prediction)}")
+    # Viral check
+    if prediction > 100000:
+        st.success("🔥 This video can go VIRAL!")
+    else:
+        st.warning("📉 Low chances of going viral")
 
-        # Save to DB
-        insert_data(like_count, comment_count, duration, int(prediction))
+    # Graph
+    st.subheader("📊 Comparison")
 
-        # Viral check
-        if prediction > 100000:
-            st.success("🔥 This video can go VIRAL!")
-        else:
-            st.warning("📉 Low chances of going viral")
+    labels = ["Likes", "Comments", "Views"]
+    values = [like_count, comment_count, prediction]
 
-        # Graph
-        st.subheader("📊 Comparison")
-
-        labels = ["Likes", "Comments", "Views"]
-        values = [like_count, comment_count, prediction]
-
-        plt.figure()
-        plt.bar(labels, values)
-        plt.yscale('log')
-        st.pyplot(plt)
-
-    
+    plt.figure()
+    plt.bar(labels, values)
+    plt.yscale('log')
+    st.pyplot(plt)
