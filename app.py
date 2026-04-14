@@ -40,7 +40,7 @@ duration = st.number_input("⏱ Duration (seconds)", min_value=1)
 if st.button("Predict"):
 
     features = np.array([[like_count, comment_count, duration]])
-    prediction = model.predict(features)[0]
+   prediction = np.expm1(model.predict(features)[0])
 
     st.success(f"📊 Predicted Views: {int(prediction)}")
 
