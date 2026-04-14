@@ -7,7 +7,8 @@ import pandas as pd
 import mysql.connector
 import os
 
-# DB connection
+
+# ---------------- DB CONNECTION ----------------
 def get_data():
     conn = mysql.connector.connect(
         host=os.getenv("DB_HOST"),
@@ -19,37 +20,41 @@ def get_data():
     return df
 
 
-# ---------------- MAIN APP ----------------
-
-# Load model
+# ---------------- LOAD MODEL ----------------
 model = pickle.load(open("model.pkl", "rb"))
 
+
+# ---------------- UI ----------------
 st.title("📈 YouTube Video View Prediction")
 
-# Inputs
-like_count = st.number_input("Like Count", min_value=0)
-comment_count = st.number_input("Comment Count", min_value=0)
-duration = st.number_input("Duration (seconds)", min_value=1)
+st.markdown("Enter video details to predict views and performance 🚀")
 
-# Prediction
+
+# ---------------- INPUTS ----------------
+like_count = st.number_input("👍 Like Count", min_value=0)
+comment_count = st.number_input("💬 Comment Count", min_value=0)
+duration = st.number_input("⏱ Duration (seconds)", min_value=1)
+
+
+# ---------------- PREDICTION ----------------
 if st.button("Predict"):
 
     features = np.array([[like_count, comment_count, duration]])
     prediction = model.predict(features)[0]
 
-    st.success(f"📈 Predicted Views: {int(prediction)}")
+    st.success(f"📊 Predicted Views: {int(prediction)}")
 
     # Save to DB
     insert_data(like_count, comment_count, duration, int(prediction))
 
-    # 🔥 LEVEL LOGIC
+    # ---------------- LEVEL LOGIC ----------------
     st.subheader("📊 Performance Level")
 
-    if prediction > 1000000:
+    if prediction > 5000000:
         st.success("🔥 High Viral Potential")
         st.markdown("🚀 This video has a strong chance of going viral!")
 
-    elif prediction > 200000:
+    elif prediction > 1000000:
         st.info("⚡ Medium Performance")
         st.markdown("👍 This video can perform well with good engagement.")
 
@@ -57,8 +62,9 @@ if st.button("Predict"):
         st.warning("📉 Low Performance")
         st.markdown("❌ This video may not reach a wide audience.")
 
-    # Graph
-    st.subheader("📊 Comparison")
+
+    # ---------------- GRAPH ----------------
+    st.subheader("📊 Comparison Chart")
 
     labels = ["Likes", "Comments", "Views"]
     values = [like_count, comment_count, prediction]
@@ -67,3 +73,11 @@ if st.button("Predict"):
     plt.bar(labels, values)
     plt.yscale('log')
     st.pyplot(plt)
+
+
+# ---------------- SHOW DATABASE ----------------
+st.subheader("📁 Previous Predictions")
+
+if st.button("Show Data"):
+    data = get_data()
+    st.dataframe(data)
