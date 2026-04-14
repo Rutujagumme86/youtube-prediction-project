@@ -21,35 +21,9 @@ def get_data():
     return df
 
 
-# Session state (login control)
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-
-# ---------------- LOGIN PAGE ----------------
-if not st.session_state.logged_in:
-
-    st.title("🔐 Admin Login")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login"):
-        if username == "admin" and password == "1234":
-            st.session_state.logged_in = True
-            st.success("Login Successful ✅")
-            st.rerun()
-        else:
-            st.error("Invalid Credentials ❌")
 
 
 # ---------------- MAIN APP (AFTER LOGIN) ----------------
-else:
-
-    # Logout button
-    if st.button("Logout"):
-        st.session_state.logged_in = False
-        st.rerun()
 
     # Load model
     model = pickle.load(open("model.pkl", "rb"))
