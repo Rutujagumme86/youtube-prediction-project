@@ -29,16 +29,21 @@ model = pickle.load(open("model.pkl", "rb"))
 
 
 # ---------------- YOUTUBE LOGO + TITLE ----------------
-col1, col2 = st.columns([1, 4])
+col1, col2 = st.columns([1, 6])
 
 with col1:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg", width=80)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg", width=100)
 
 with col2:
-    st.title("YouTube Video View Prediction")
+    st.markdown(
+        "<h1 style='margin-top:10px;'>YouTube Video View Prediction</h1>",
+        unsafe_allow_html=True
+    )
 
-
-st.markdown("Enter video details to predict views and performance 🚀")
+st.markdown(
+    "<p style='font-size:18px; color:gray;'>Enter video details to predict views and performance 🚀</p>",
+    unsafe_allow_html=True
+)
 
 
 # ---------------- INPUTS ----------------
